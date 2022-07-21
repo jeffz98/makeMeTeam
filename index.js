@@ -144,7 +144,7 @@ function engineerQuestions () {
 // function that writes index file
 function buildTeam () {
   
-   fs.writeFile('./dist/index.html', 
+   fs.writeFileSync('./dist/index.html', 
   `
   <!DOCTYPE html>
   <html lang="en">
@@ -152,6 +152,8 @@ function buildTeam () {
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link href = './style.css'>
       <title>Team</title>
   </head>
   <body>
@@ -159,16 +161,18 @@ function buildTeam () {
       <div id = 'team'>
       
       
-      </div>
+      
   
   
-  ` , function(err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Success!")
-    }
-  })
+  ` 
+  // , function(err) {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     console.log("Success!")
+  //   }
+  // }
+  )
   for (var i = 0; i < team.length; i++) {
     var employee = team[i];
     console.log(employee)
@@ -184,7 +188,7 @@ function buildTeam () {
     } else if (lastPropKey === 'github') {
       str = "Github: " + lastPropVal;
     }
-    fs.appendFile('../dist/index.html', `
+    fs.appendFileSync('./dist/index.html', `
     <div class = 'card'>
     <section>
         <h3>${employee.name}</h3>
@@ -197,7 +201,7 @@ function buildTeam () {
     </section>
     </div>`)
   }
-  fs.appendFile('./dist/index.html', `<script src='../index.js'></script>
+  fs.appendFileSync('./dist/index.html', `</div> <script src='../index.js'></script>
   </body>
   </html>`)
   // printCards()
