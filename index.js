@@ -8,7 +8,7 @@ var team = [];
 
 
 // created an array of questions to prompt user
-async function managerQuestions () {
+function managerQuestions () {
   inquirer.prompt(
  [{
     type: 'input',
@@ -42,9 +42,9 @@ async function managerQuestions () {
     team.push(manager);
     
     if (managerAnswers.teamType === 'Intern') {
-      await internQuestions();
+      internQuestions();
     } else if (managerAnswers.teamType === 'Engineer'){
-      await engineerQuestions();
+       engineerQuestions();
     } else {
       buildTeam();
     }
@@ -143,6 +143,32 @@ function engineerQuestions () {
 
 // function that writes index file
 function buildTeam () {
+  
+   fs.writeFile('./dist/index.html', 
+  `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Team</title>
+  </head>
+  <body>
+      <h1>My Team</h1>
+      <div id = 'team'>
+      
+      
+      </div>
+  
+  
+  ` , function(err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Success!")
+    }
+  })
   for (var i = 0; i < team.length; i++) {
     var employee = team[i];
     console.log(employee)
@@ -158,57 +184,30 @@ function buildTeam () {
     } else if (lastPropKey === 'github') {
       str = "Github: " + lastPropVal;
     }
-   fs.writeFile('./dist/index.html', 
-  `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Team</title>
-  </head>
-  <body>
-      <h1>My Team</h1>
-      <div id = 'team'>
-      
-      <div class = 'card'>
-            <section>
-                <h3>${employee.name}</h3>
-                <h4>${employee.getRole()} </h4>
-            </section>
-            <section>
-                <p>ID: ${employee.id}</p>
-                <p>Email: ${employee.email}</p>
-                <p>${str}</p>
-            </section>
-        </div>
-      
-      </div>
-  
-  <script src='../index.js'></script>
+    fs.appendFile('../dist/index.html', `
+    <div class = 'card'>
+    <section>
+        <h3>${employee.name}</h3>
+        <h4>${employee.getRole()} </h4>
+    </section>
+    <section>
+        <p>ID: ${employee.id}</p>
+        <p>Email: ${employee.email}</p>
+        <p>${str}</p>
+    </section>
+    </div>`)
+  }
+  fs.appendFile('./dist/index.html', `<script src='../index.js'></script>
   </body>
-  </html>
-  `, function(err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Success!")
-    }
-  })
-  // await printCards()
+  </html>`)
+  // printCards()
+
   
 }
 
 function printCards() {
-  // await buildTeam()
   // console.log("hi")
   
-    
-    
-    
-    
-  }
 
 } 
 
