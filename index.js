@@ -189,19 +189,20 @@ function buildTeam () {
       str = "Github: " + lastPropVal;
     }
     fs.appendFileSync('./dist/index.html', `
-    <div class = 'card'>
-    <section>
+    <div class="card">
+    <section class="card-header">
         <h3>${employee.name}</h3>
         <h4>${employee.getRole()} </h4>
     </section>
-    <section>
+    <section class="card-body">
         <p>ID: ${employee.id}</p>
         <p>Email: ${employee.email}</p>
         <p>${str}</p>
     </section>
     </div>`)
   }
-  fs.appendFileSync('./dist/index.html', `</div> <script src='../index.js'></script>
+  fs.appendFileSync('./dist/index.html', `
+  </div>
   </body>
   </html>`)
   // printCards()
