@@ -1,4 +1,4 @@
-
+// storing the imported classes into variables to be used later
 const fs = require('fs');
 const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
@@ -7,7 +7,7 @@ const Engineer = require('./lib/Engineer');
 var team = [];
 
 
-
+// uses inquirer to prompt for only manager questions
 function managerQuestions() {
   inquirer.prompt(
     [{
@@ -37,6 +37,7 @@ function managerQuestions() {
       choices: ['Intern', 'Engineer', "I don't want to add any more team members"]
     },
     ]
+    // returns a promise that creates a new Manager object with answers, adds to team array, then checks if User wants to further add people to team
   ).then((managerAnswers) => {
     const manager = new Manager(managerAnswers.name, managerAnswers.id, managerAnswers.email, managerAnswers.officeNum);
     team.push(manager);
@@ -54,6 +55,7 @@ function managerQuestions() {
   )
 }
 
+// prompts user for intern questions with inquirer
 function internQuestions() {
   inquirer.prompt([
     {
@@ -82,6 +84,7 @@ function internQuestions() {
       name: 'teamType',
       choices: ['Intern', 'Engineer', "I don't want to add any more team members"]
     },
+    // creates a promise that generates an Intern object, adds to team array, then checks if User wants to further add people to team
   ]).then((internAnswers) => {
     const intern = new Intern(internAnswers.name, internAnswers.id, internAnswers.email, internAnswers.school);
     team.push(intern);
@@ -98,6 +101,7 @@ function internQuestions() {
   })
 }
 
+// function to prompt user to add an engineer to team, checks if user wants to further add people to the team
 function engineerQuestions() {
   inquirer.prompt([
     {
@@ -126,6 +130,7 @@ function engineerQuestions() {
       name: 'teamType',
       choices: ['Intern', 'Engineer', "I don't want to add any more team members"]
     },
+    // awaits a promise to create a new Engineer object, adds to team array, checks if user wants to further add members
   ]).then((engineerAnswers) => {
     const engineer = new Engineer(engineerAnswers.name, engineerAnswers.id, engineerAnswers.email, engineerAnswers.githubName);
     team.push(engineer);
@@ -142,7 +147,9 @@ function engineerQuestions() {
 }
 
 
+// function that writes to index.html in the dist folder containing team member info in cards, split into three parts
 function buildTeam() {
+
 
   fs.writeFileSync('./dist/index.html',
     `
@@ -164,12 +171,15 @@ function buildTeam() {
   `
     
   )
+  // loops through team array of extended Employee objects
   for (var i = 0; i < team.length; i++) {
     var employee = team[i];
     console.log(employee)
+    // gets the last key and value and stores them in variables 
     var lastPropVal = Object.values(employee).pop();
     var lastPropKey = Object.keys(employee).pop();
     
+    // handling what to display depending on what the last key value pair contains
     var str;
     if (lastPropKey === 'officeNumber') {
       str = "Office number: " + lastPropVal;
@@ -178,6 +188,7 @@ function buildTeam() {
     } else if (lastPropKey === 'github') {
       str = "Github: " + `<a href="https://github.com/${lastPropVal}">${lastPropVal}</a>`;
     }
+    // appends to file the dynamically generated cards
     fs.appendFileSync('./dist/index.html',
       `
     
@@ -198,7 +209,7 @@ function buildTeam() {
     
     )
 
-
+// appends to file the closing tags of html
   }
   fs.appendFileSync('./dist/index.html', `
   
@@ -213,19 +224,11 @@ function buildTeam() {
 
 }
 
-
-
-
-
 function init() {
   
   managerQuestions();
- 
-
 
 }
-
-
 
 
 init();
