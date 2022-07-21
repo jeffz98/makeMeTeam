@@ -1,4 +1,4 @@
-// included packages needed
+
 const fs = require('fs');
 const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
@@ -7,55 +7,55 @@ const Engineer = require('./lib/Engineer');
 var team = [];
 
 
-// created an array of questions to prompt user
-function managerQuestions () {
+
+function managerQuestions() {
   inquirer.prompt(
- [{
-    type: 'input',
-    message: "What is the team manager's name?",
-    name: 'name',
-  },
-  {
-    type: 'input',
-    message: "What is the team manager's id",
-    name: 'id',
-  },
-  {
-    type: 'input',
-    message: "What is the team manager's email?",
-    name: 'email',
-  },
-  {
-    type: 'input',
-    message: "What is the team manager's office number?",
-    name: 'officeNum',
-  },
-  {
-    type: 'list',
-    message: 'Which type of team member would you like to add?',
-    name: 'teamType',
-    choices: ['Intern', 'Engineer', "I don't want to add any more team members"]
-  },
-  ]
+    [{
+      type: 'input',
+      message: "What is the team manager's name?",
+      name: 'name',
+    },
+    {
+      type: 'input',
+      message: "What is the team manager's id",
+      name: 'id',
+    },
+    {
+      type: 'input',
+      message: "What is the team manager's email?",
+      name: 'email',
+    },
+    {
+      type: 'input',
+      message: "What is the team manager's office number?",
+      name: 'officeNum',
+    },
+    {
+      type: 'list',
+      message: 'Which type of team member would you like to add?',
+      name: 'teamType',
+      choices: ['Intern', 'Engineer', "I don't want to add any more team members"]
+    },
+    ]
   ).then((managerAnswers) => {
     const manager = new Manager(managerAnswers.name, managerAnswers.id, managerAnswers.email, managerAnswers.officeNum);
     team.push(manager);
-    
+
     if (managerAnswers.teamType === 'Intern') {
       internQuestions();
-    } else if (managerAnswers.teamType === 'Engineer'){
-       engineerQuestions();
+    } else if (managerAnswers.teamType === 'Engineer') {
+      engineerQuestions();
     } else {
       buildTeam();
     }
-    
+
 
   }
-  ) 
+  )
 }
 
-function internQuestions () {
-  inquirer.prompt( [ 
+function internQuestions() {
+  inquirer.prompt([
     {
       type: 'input',
       message: "What is the intern's name?",
@@ -82,24 +82,24 @@ function internQuestions () {
       name: 'teamType',
       choices: ['Intern', 'Engineer', "I don't want to add any more team members"]
     },
-]).then((internAnswers) => {
-  const intern = new Intern(internAnswers.name, internAnswers.id, internAnswers.email, internAnswers.school);
-  team.push(intern);
-  
-  if (internAnswers.teamType === 'Intern') {
-    internQuestions();
-  } else if (internAnswers.teamType === 'Engineer'){
-    engineerQuestions();
-  } else {
-    buildTeam();
-  }
-  
+  ]).then((internAnswers) => {
+    const intern = new Intern(internAnswers.name, internAnswers.id, internAnswers.email, internAnswers.school);
+    team.push(intern);
 
-})
+    if (internAnswers.teamType === 'Intern') {
+      internQuestions();
+    } else if (internAnswers.teamType === 'Engineer') {
+      engineerQuestions();
+    } else {
+      buildTeam();
+    }
+
+
+  })
 }
 
-function engineerQuestions () {
-  inquirer.prompt( [
+function engineerQuestions() {
+  inquirer.prompt([
     {
       type: 'input',
       message: "What is the engineer's name?",
@@ -114,7 +114,7 @@ function engineerQuestions () {
       type: 'input',
       message: "What is the engineer's email?",
       name: 'email',
-    }, 
+    },
     {
       type: 'input',
       message: "What is your engineer's Github username?",
@@ -126,26 +126,26 @@ function engineerQuestions () {
       name: 'teamType',
       choices: ['Intern', 'Engineer', "I don't want to add any more team members"]
     },
-]).then((engineerAnswers) => {
-  const engineer = new Engineer(engineerAnswers.name, engineerAnswers.id, engineerAnswers.email, engineerAnswers.githubName);
-  team.push(engineer);
-  if (engineerAnswers.teamType === 'Intern') {
-    internQuestions();
-  } else if (engineerAnswers.teamType === 'Engineer'){
-    engineerQuestions();
-  } else {
-    buildTeam();
-  }
-  
+  ]).then((engineerAnswers) => {
+    const engineer = new Engineer(engineerAnswers.name, engineerAnswers.id, engineerAnswers.email, engineerAnswers.githubName);
+    team.push(engineer);
+    if (engineerAnswers.teamType === 'Intern') {
+      internQuestions();
+    } else if (engineerAnswers.teamType === 'Engineer') {
+      engineerQuestions();
+    } else {
+      buildTeam();
+    }
 
-})
+
+  })
 }
 
-// function that writes index file
-function buildTeam () {
-  
-   fs.writeFileSync('./dist/index.html', 
-  `
+
+function buildTeam() {
+
+  fs.writeFileSync('./dist/index.html',
+    `
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -156,78 +156,77 @@ function buildTeam () {
       <link href = './style.css'>
       <title>Team</title>
   </head>
-  <body>
-      <h1>My Team</h1>
-      <div id = 'team'>
-      
-      
-      
-  
-  
-  ` 
-  // , function(err) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     console.log("Success!")
-  //   }
-  // }
+  <body class="container">
+      <div class = "jumbotron text-center text-white bg-danger"><h1>My Team</h1></div>
+    <div class="container">
+      <div class="row">
+ 
+  `
+    
   )
   for (var i = 0; i < team.length; i++) {
     var employee = team[i];
     console.log(employee)
     var lastPropVal = Object.values(employee).pop();
     var lastPropKey = Object.keys(employee).pop();
-    // var lastPropVal = lastProp[3]
-    // console.log(lastProp)
+    
     var str;
     if (lastPropKey === 'officeNumber') {
       str = "Office number: " + lastPropVal;
     } else if (lastPropKey === 'school') {
       str = "School: " + lastPropVal;
     } else if (lastPropKey === 'github') {
-      str = "Github: " + lastPropVal;
+      str = "Github: " + `<a href="https://github.com/${lastPropVal}">${lastPropVal}</a>`;
     }
-    fs.appendFileSync('./dist/index.html', `
-    <div class="card">
-    <section class="card-header">
-        <h3>${employee.name}</h3>
-        <h4>${employee.getRole()} </h4>
-    </section>
-    <section class="card-body">
-        <p>ID: ${employee.id}</p>
-        <p>Email: ${employee.email}</p>
-        <p>${str}</p>
-    </section>
-    </div>`)
+    fs.appendFileSync('./dist/index.html',
+      `
+    
+        <div class="col-1"></div>
+        <div class="card col-3 shadow-lg" >
+            <div class="card-header bg-primary text-white">
+                <h3>${employee.name}</h3>
+                <h4>${employee.getRole()}</h4>
+            </div>
+            <section class="card-body bg-light">
+                <p class="bg-white border-1 border-dark">ID: ${employee.id}</p>
+                <p class="bg-white border-1 border-dark">Email:<a href = "mailto:${employee.email}" >${employee.email}</a></p>
+                <p class="bg-white border-1 border-dark">${str}</p>
+            </section>
+          </div>
+        
+`
+    
+    )
+
+
   }
   fs.appendFileSync('./dist/index.html', `
+  
+        
+        <div class="col-1"></div>
+    </div>
   </div>
   </body>
   </html>`)
-  // printCards()
-
   
+
+
 }
 
-function printCards() {
-  // console.log("hi")
-  
 
-} 
 
 
 
 function init() {
-  // used inquirer to prompt the user to answer 
-  managerQuestions();
-  // writing to file previously written markdown"
   
-     
+  managerQuestions();
+ 
+
+
 }
 
 
 
 
 init();
-printCards();
+
