@@ -188,7 +188,7 @@ function buildTeam() {
     } else if (lastPropKey === 'github') {
       str = "Github: " + `<a href="https://github.com/${lastPropVal}">${lastPropVal}</a>`;
     }
-    // appends to file the dynamically generated cards
+    // appends to file the dynamically generated cards using bootstrap css
     fs.appendFileSync('./dist/index.html',
       `
     
